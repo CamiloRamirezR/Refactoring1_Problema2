@@ -17,7 +17,7 @@ import os
 
 
 def organizar():
-    error_file_path = './refactoring/problema2/data/error.log'
+    error_file_path = './data/error.log'
 
     with open(error_file_path, 'r') as f:
         errores = []
