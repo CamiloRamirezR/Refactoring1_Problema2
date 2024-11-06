@@ -15,24 +15,31 @@
 
 import os
 
+ERROR_FILE_PATH = './data/error.log'
+ERROR_SEVERITY_THRESHOLD = 50
+ERROR_SIGN = 'E'
+
+def leer_archivo(path):
+    with open(path, 'r') as f:
+        lineas = f.readlines()
+    return [line.rstrip().split(' ') for line in lineas]
+
+def filtrar_errores(lineas):
+    return [linea for linea in lineas if linea[0] == ERROR_SIGN and int(linea[1]) > ERROR_SEVERITY_THRESHOLD]
+
+def organizar_errores(errores):
+    return sorted(errores, key=lambda x: int(x[2]))
+
+def imprimir_errores(errores):
+    for error in errores:
+        print(' '.join(error))
+
 
 def organizar():
-    error_file_path = './data/error.log'
-
-    with open(error_file_path, 'r') as f:
-        errores = []
-
-        lineas = f.readlines()
-        lineas = [line.rstrip().split(' ') for line in lineas]
-
-        for linea in lineas:
-            if linea[0] == 'E' and int(linea[1]) > 50:
-                errores.append(linea)
-
-        errores.sort(key=lambda x: int(x[2]))
-
-        for error in errores:
-            print(' '.join(error))
+    lineas = leer_archivo(ERROR_FILE_PATH)
+    errores = filtrar_errores(lineas)
+    errores_ordenados = organizar_errores(errores)
+    imprimir_errores(errores_ordenados)
 
 
 def main():
